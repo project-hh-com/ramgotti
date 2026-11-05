@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 240" width="100%" height="240">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&amp;family=Pretendard:wght@600;800&amp;display=swap');
+      .bg { fill: #0f141c; rx: 16px; }
+      .card { fill: #18202c; stroke: #2a3649; stroke-width: 1.5; rx: 12px; }
+      .title { font-family: 'Press Start 2P', monospace; font-size: 13px; fill: #60a5fa; }
+      .state-title { font-family: 'Pretendard', sans-serif; font-size: 14px; font-weight: 800; fill: #e2e8f0; text-anchor: middle; }
+      .state-desc { font-family: 'Pretendard', sans-serif; font-size: 11px; font-weight: 600; fill: #94a3b8; text-anchor: middle; }
+      .badge-safe { fill: #10b981; font-family: 'Press Start 2P', monospace; font-size: 9px; }
+      .badge-warn { fill: #ef4444; font-family: 'Press Start 2P', monospace; font-size: 9px; }
+      .badge-clean { fill: #38bdf8; font-family: 'Press Start 2P', monospace; font-size: 9px; }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect class="bg" width="720" height="240" />
+
+  <!-- Header -->
+  <text x="30" y="36" class="title">🐑 RAMgotti (램고치) v0.1 Prototype</text>
+  <text x="690" y="36" font-family="'Press Start 2P', monospace" font-size="10px" fill="#64748b" text-anchor="end">Always-on-Top Pet</text>
+
+  <!-- Card 1: Idle / Sleep -->
+  <rect class="card" x="25" y="55" width="215" height="165" />
+  <g transform="translate(132, 120)">
+    <!-- Sleep Lamb (Fluffy Cloud) -->
+    <ellipse cx="0" cy="5" rx="36" ry="26" fill="#f8fafc" />
+    <circle cx="-24" cy="-5" r="16" fill="#f8fafc" />
+    <circle cx="24" cy="-5" r="16" fill="#f8fafc" />
+    <circle cx="0" cy="-14" r="18" fill="#f8fafc" />
+    <!-- Face -->
+    <ellipse cx="0" cy="6" rx="16" ry="14" fill="#fed7aa" />
+    <!-- Closed Eyes (sleeping) -->
+    <path d="M-8,5 Q-5,8 -2,5" stroke="#78350f" stroke-width="2" fill="none" />
+    <path d="M2,5 Q5,8 8,5" stroke="#78350f" stroke-width="2" fill="none" />
+    <!-- Cheeks -->
+    <circle cx="-10" cy="9" r="3" fill="#f472b6" opacity="0.6" />
+    <circle cx="10" cy="9" r="3" fill="#f472b6" opacity="0.6" />
+    <!-- Tiny Horns -->
+    <path d="M-12,-4 Q-18,-8 -15,-14" stroke="#f59e0b" stroke-width="3" stroke-linecap="round" fill="none" />
+    <path d="M12,-4 Q18,-8 15,-14" stroke="#f59e0b" stroke-width="3" stroke-linecap="round" fill="none" />
+    <!-- zZ floating -->
+    <text x="26" y="-18" font-family="'Press Start 2P', monospace" font-size="11px" fill="#a5b4fc">z</text>
+    <text x="36" y="-28" font-family="'Press Start 2P', monospace" font-size="14px" fill="#818cf8">Z</text>
+  </g>
+  <text x="132" y="182" class="state-title">1. 쿨쿨 모드</text>
+  <text x="132" y="202" class="state-desc">RAM &lt; 60% · 화면 구석 낮잠</text>
+
+  <!-- Card 2: Emergency 80% -->
+  <rect class="card" x="252" y="55" width="215" height="165" />
+  <g transform="translate(360, 120)">
+    <!-- Panic Lamb -->
+    <ellipse cx="0" cy="5" rx="36" ry="26" fill="#f8fafc" />
+    <circle cx="-24" cy="-5" r="16" fill="#f8fafc" />
+    <circle cx="24" cy="-5" r="16" fill="#f8fafc" />
+    <circle cx="0" cy="-14" r="18" fill="#f8fafc" />
+    <!-- Face -->
+    <ellipse cx="0" cy="6" rx="16" ry="14" fill="#fed7aa" />
+    <!-- Wide Eyes (shook) -->
+    <circle cx="-6" cy="4" r="3.5" fill="#1e293b" />
+    <circle cx="6" cy="4" r="3.5" fill="#1e293b" />
+    <circle cx="-5" cy="3" r="1.2" fill="#ffffff" />
+    <circle cx="7" cy="3" r="1.2" fill="#ffffff" />
+    <!-- Open Mouth -->
+    <ellipse cx="0" cy="12" rx="3" ry="4" fill="#ef4444" />
+    <!-- Sweat drop -->
+    <path d="M18,-15 C18,-15 14,-8 14,-5 A4,4 0 0,0 22,-5 C22,-8 18,-15 18,-15 Z" fill="#38bdf8" />
+    <!-- Speech bubble mini -->
+    <rect x="-45" y="-42" width="90" height="20" rx="6" fill="#ef4444" />
+    <text x="0" y="-28" font-family="'Pretendard', sans-serif" font-size="10px" font-weight="800" fill="#ffffff" text-anchor="middle">RAM 88%! 숨차요</text>
+  </g>
+  <text x="360" y="182" class="state-title">2. 땀 삐질 위기</text>
+  <text x="360" y="202" class="state-desc">RAM ≥ 80% · 뺴꼼 슬라이드업</text>
+
+  <!-- Card 3: Clean & Purge -->
+  <rect class="card" x="480" y="55" width="215" height="165" />
+  <g transform="translate(588, 120)">
+    <!-- Happy Cleaner Lamb -->
+    <ellipse cx="0" cy="5" rx="36" ry="26" fill="#f8fafc" />
+    <circle cx="-24" cy="-5" r="16" fill="#f8fafc" />
+    <circle cx="24" cy="-5" r="16" fill="#f8fafc" />
+    <circle cx="0" cy="-14" r="18" fill="#f8fafc" />
+    <!-- Face -->
+    <ellipse cx="0" cy="6" rx="16" ry="14" fill="#fed7aa" />
+    <!-- Happy Crescent Eyes -->
+    <path d="M-8,4 Q-5,1 -2,4" stroke="#78350f" stroke-width="2.5" fill="none" />
+    <path d="M2,4 Q5,1 8,4" stroke="#78350f" stroke-width="2.5" fill="none" />
+    <!-- Cheerful Smile -->
+    <path d="M-4,10 Q0,14 4,10" stroke="#ef4444" stroke-width="2" fill="none" />
+    <!-- Broom -->
+    <line x1="22" y1="-20" x2="32" y2="15" stroke="#d97706" stroke-width="3" stroke-linecap="round" />
+    <path d="M28,10 L38,18 L30,22 Z" fill="#f59e0b" />
+    <!-- Sparkles -->
+    <text x="-30" y="-15" font-size="14px">✨</text>
+    <text x="28" y="-25" font-size="12px">🧹</text>
+    <!-- XP Pop -->
+    <rect x="-40" y="-42" width="80" height="20" rx="6" fill="#10b981" />
+    <text x="0" y="-28" font-family="'Press Start 2P', monospace" font-size="9px" fill="#ffffff" text-anchor="middle">+3.8GB</text>
+  </g>
+  <text x="588" y="182" class="state-title">3. 싹 쓸기 완료</text>
+  <text x="588" y="202" class="state-desc">원클릭 탭 동결 &amp; 램 회수!</text>
+</svg>
