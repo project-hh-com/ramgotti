@@ -100,7 +100,7 @@ fn get_memory_stats() -> MemoryStats {
 }
 
 #[tauri::command]
-async fn clean_memory() -> Result<CleanResult, String> {
+fn clean_memory() -> Result<CleanResult, String> {
     // 1. macOS purge 호출 시도
     #[cfg(target_os = "macos")]
     {
@@ -108,7 +108,7 @@ async fn clean_memory() -> Result<CleanResult, String> {
     }
 
     // 2. 가벼운 딜레이 (애니메이션 연출)
-    tokio::time::sleep(std::time::Duration::from_millis(500)).await;
+    std::thread::sleep(std::time::Duration::from_millis(500));
 
     Ok(CleanResult {
         freed_mb: 3840,

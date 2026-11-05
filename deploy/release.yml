@@ -21,7 +21,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: pnpm
 
       - name: Install Rust toolchain
         run: |
@@ -88,7 +87,9 @@ jobs:
           git clone --depth 1 "https://x-access-token:${GH_TOKEN}@github.com/project-hh-com/homebrew-ramgotti.git" "$TAP_DIR" || exit 0
 
           CASK="$TAP_DIR/Casks/ramgotti.rb"
-          sed -i -e "s/version \".*\"/version \"${VERSION}\"/" "$CASK" || true
+          mkdir -p "$TAP_DIR/Casks"
+
+          python3 scripts/update-cask.py "$CASK" "$VERSION" "$ARM_SHA" "$X64_SHA"
 
           cd "$TAP_DIR"
           git config user.name "github-actions[bot]"

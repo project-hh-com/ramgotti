@@ -12,6 +12,7 @@
   "app": {
     "windows": [
       {
+        "label": "main",
         "title": "RAMgotti",
         "width": 320,
         "height": 260,
