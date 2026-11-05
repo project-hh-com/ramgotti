@@ -32,6 +32,7 @@ export const RamgottiPet: React.FC<Props> = ({
 
       {/* Pet Interactive Body */}
       <div
+        data-tauri-drag-region
         onClick={onClick}
         className={`relative cursor-pointer transition-transform duration-300 hover:scale-105 ${
           state === 'panic'
