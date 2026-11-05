@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { PetState, MemoryStats, CleanResult, AppSettings } from './types';
+import { PetState, MemoryStats, CleanResult, PetEvolution, AppSettings } from './types';
 import { RamgottiPet } from './components/RamgottiPet';
 import { PanicBubble } from './components/PanicBubble';
 import { CleanReceipt } from './components/CleanReceipt';
@@ -42,6 +42,16 @@ export function App() {
 
   const currentChar =
     CHARACTERS.find((c) => c.id === settings.selectedCharacterId) ?? CHARACTERS[0];
+
+  // Gamification state
+  const [evolution, setEvolution] = useState<PetEvolution>({
+    level: 1,
+    exp: 0,
+    nextExp: 3000,
+    title: currentChar.name,
+    avatarStage: 1,
+    totalFreedMb: 0,
+  });
 
   // Polling memory telemetry
   useEffect(() => {
@@ -155,7 +165,7 @@ export function App() {
 
         {/* Level & RAM badge on hover */}
         <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-900/90 border border-slate-700 text-slate-200 px-2 py-0.5 rounded-full text-[10px] font-pixel whitespace-nowrap pointer-events-none">
-          {currentChar.name} · RAM {stats?.usedPercent ?? 0}%
+          Lv.{evolution.level} {currentChar.name} · RAM {stats?.usedPercent ?? 0}%
         </div>
       </div>
 
