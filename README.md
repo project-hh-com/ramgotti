@@ -4,7 +4,7 @@
 > *Always-on-Top macOS Desktop Companion built with Tauri v2 + React 19 + TypeScript + Rust*
 
 <p align="center">
-  <img src="assets/ramgotti-preview.svg" alt="RAMgotti 3-Stage Preview" width="100%" />
+  <img src="https://raw.githubusercontent.com/project-hh-com/ramgotti/main/assets/ramgotti-preview.svg" alt="RAMgotti 3-Stage Preview" width="100%" />
 </p>
 
 <p align="center">
