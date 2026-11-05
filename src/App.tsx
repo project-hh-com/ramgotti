@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { PetState, MemoryStats, CleanResult, PetEvolution, AppSettings } from './types';
+import { PetState, MemoryStats, CleanResult, AppSettings } from './types';
 import { RamgottiPet } from './components/RamgottiPet';
 import { PanicBubble } from './components/PanicBubble';
 import { CleanReceipt } from './components/CleanReceipt';
@@ -42,16 +42,6 @@ export function App() {
 
   const currentChar =
     CHARACTERS.find((c) => c.id === settings.selectedCharacterId) ?? CHARACTERS[0];
-
-  // Gamification state
-  const [evolution, setEvolution] = useState<PetEvolution>({
-    level: 2,
-    exp: 4200,
-    nextExp: 8000,
-    title: currentChar.name,
-    avatarStage: 1,
-    totalFreedMb: 14200,
-  });
 
   // Polling memory telemetry
   useEffect(() => {
