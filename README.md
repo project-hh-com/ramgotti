@@ -54,6 +54,29 @@
 
 ---
 
+## 📦 설치하기 (Installation)
+
+### ✅ 방법 1. Homebrew로 1초 설치 (권장)
+터미널에서 명령어 한 줄이면 설치 끝! Apple Silicon(M1/M2/M3/M4)과 Intel 칩셋 자동 인식 및 Gatekeeper 우회(`xattr`)까지 자동 처리됩니다.
+
+```bash
+brew install --cask project-hh-com/ramgotti/ramgotti
+```
+
+> **제거할 때**:
+> ```bash
+> brew uninstall --cask ramgotti
+> ```
+
+### 📥 방법 2. DMG 직접 다운로드
+[GitHub Releases](https://github.com/project-hh-com/ramgotti/releases)에서 내 Mac 칩셋에 맞는 DMG를 내려받아 `Applications` 폴더로 드래그하세요.
+- **Apple Silicon (M1/M2/M3/M4)**: `RAMgotti-arm64.dmg`
+- **Intel Mac**: `RAMgotti-x64.dmg`
+
+*(직접 설치 시 Gatekeeper "손상되어 열 수 없습니다" 경고가 뜨면: `xattr -dr com.apple.quarantine /Applications/RAMgotti.app` 실행)*
+
+---
+
 ## 🚀 빠른 시작 (Quick Start)
 
 ### 1. 맥북 터미널에서 당장 램 3GB 털어내기 (독립 스크립트)
