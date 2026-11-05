@@ -5,26 +5,42 @@ export const CHARACTERS: CharacterItem[] = [
   {
     id: 'mochi',
     name: '몽글 픽셀 램',
-    subtitle: '반짝이는 눈망울과 황금빛 뿔을 가진 솜사탕 양',
+    subtitle: '반짝이는 눈망울과 황금빛 뿔의 솜사탕 양',
     image: '/characters/mochi.png',
-    badge: '인기 1위',
-    tag: 'PIXEL',
+    badge: '다희 픽 🐑',
+    tag: 'LAMB',
+  },
+  {
+    id: 'hamster',
+    name: '볼빵빵 햄찌',
+    subtitle: '메모리를 해바라기씨처럼 볼에 가득 담은 햄스터',
+    image: '/characters/hamster.png',
+    badge: 'NEW 🐹',
+    tag: 'HAMSTER',
+  },
+  {
+    id: 'cat',
+    name: '퐁퐁 먼지냥',
+    subtitle: '화면 구석에서 분홍 젤리 흔드는 솜뭉치 고양이',
+    image: '/characters/cat.png',
+    badge: 'NEW 🐱',
+    tag: 'CAT',
+  },
+  {
+    id: 'baepsae',
+    name: '찹쌀떡 뱁새',
+    subtitle: '동글동글 꼬물거리는 레트로 다마고치 뱁새',
+    image: '/characters/baepsae.png',
+    badge: 'NEW 🐦',
+    tag: 'BIRD',
   },
   {
     id: 'beanie',
     name: '비니 쓴 청소양',
     subtitle: '노란 털비니를 쓰고 미니 빗자루를 든 아기양',
     image: '/characters/beanie.png',
-    badge: '귀여움 폭발',
+    badge: '귀여움',
     tag: 'CHIBI',
-  },
-  {
-    id: 'marshmallow',
-    name: '마시멜로 구름양',
-    subtitle: '램 위기 시 땀을 삐질 흘리는 말랑 발광 구름',
-    image: '/characters/marshmallow.png',
-    badge: '모찌모찌',
-    tag: 'SOFT',
   },
   {
     id: 'vector',
@@ -49,7 +65,7 @@ export const SettingsModal: React.FC<Props> = ({
 }) => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 bg-black/60 backdrop-blur-sm animate-float-up select-none">
-      <div className="bg-slate-900/95 border border-slate-700/80 rounded-2xl w-full max-w-sm p-4 shadow-2xl text-slate-100 flex flex-col max-h-[92vh]">
+      <div className="bg-slate-900/95 border border-slate-700/80 rounded-2xl w-full max-w-md p-4 shadow-2xl text-slate-100 flex flex-col max-h-[92vh]">
         {/* Header */}
         <div className="flex items-center justify-between pb-3 border-b border-slate-800">
           <div className="flex items-center gap-2">
@@ -72,9 +88,9 @@ export const SettingsModal: React.FC<Props> = ({
           {/* Section 1: Character Selector */}
           <div>
             <label className="text-[11px] font-pixel text-cyan-400 block mb-2">
-              🎨 램고치 캐릭터 선택
+              🎨 램고치 캐릭터 선택 (양 · 햄찌 · 고양이 · 뱁새)
             </label>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
               {CHARACTERS.map((char) => {
                 const isSelected = settings.selectedCharacterId === char.id;
                 return (
@@ -144,7 +160,7 @@ export const SettingsModal: React.FC<Props> = ({
               ))}
             </div>
             <p className="text-[10px] text-slate-500 mt-1">
-              설정한 메모리 점유율을 초과하면 램고치가 팝업되어 싹 쓸기를 제안합니다.
+              설정한 메모리 점유율을 초과하면 펫이 팝업되어 싹 쓸기를 제안합니다.
             </p>
           </div>
 
