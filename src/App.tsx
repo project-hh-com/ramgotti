@@ -1,23 +1,54 @@
 import { useState, useEffect } from 'react';
-import { PetState, MemoryStats, CleanResult, PetEvolution } from './types';
+import { PetState, MemoryStats, CleanResult, PetEvolution, AppSettings } from './types';
 import { RamgottiPet } from './components/RamgottiPet';
 import { PanicBubble } from './components/PanicBubble';
 import { CleanReceipt } from './components/CleanReceipt';
+import { SettingsModal, CHARACTERS } from './components/SettingsModal';
 import { fetchMemoryStats, triggerCleanMemory } from './lib/tauri-bridge';
 import { sfx } from './lib/sfx';
+
+const DEFAULT_SETTINGS: AppSettings = {
+  selectedCharacterId: 'mochi', // 기본값: 몽글 픽셀 램
+  panicThresholdPercent: 80,
+  soundEnabled: true,
+  autoCleanEnabled: false,
+};
 
 export function App() {
   const [stats, setStats] = useState<MemoryStats | null>(null);
   const [petState, setPetState] = useState<PetState>('sleep');
   const [isCleaning, setIsCleaning] = useState(false);
   const [cleanResult, setCleanResult] = useState<CleanResult | null>(null);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+
+  // Settings with localStorage persistence
+  const [settings, setSettings] = useState<AppSettings>(() => {
+    try {
+      const saved = localStorage.getItem('ramgotti_settings');
+      return saved ? JSON.parse(saved) : DEFAULT_SETTINGS;
+    } catch {
+      return DEFAULT_SETTINGS;
+    }
+  });
+
+  const handleUpdateSettings = (newSettings: AppSettings) => {
+    setSettings(newSettings);
+    try {
+      localStorage.setItem('ramgotti_settings', JSON.stringify(newSettings));
+    } catch (e) {
+      console.warn('Failed to save settings:', e);
+    }
+  };
+
+  const currentChar =
+    CHARACTERS.find((c) => c.id === settings.selectedCharacterId) ?? CHARACTERS[0];
 
   // Gamification state
   const [evolution, setEvolution] = useState<PetEvolution>({
     level: 2,
     exp: 4200,
     nextExp: 8000,
-    title: '꼬마 먼지양 (Dusty Lamb)',
+    title: currentChar.name,
     avatarStage: 1,
     totalFreedMb: 14200,
   });
@@ -31,12 +62,17 @@ export function App() {
       setStats(current);
 
       if (!isCleaning && !cleanResult) {
-        if (current.usedPercent >= 80) {
+        if (current.usedPercent >= settings.panicThresholdPercent) {
           if (petState !== 'panic') {
-            sfx.playPanic();
+            if (settings.soundEnabled) sfx.playPanic();
           }
           setPetState('panic');
-        } else if (current.usedPercent >= 65) {
+
+          // Auto-clean if enabled
+          if (settings.autoCleanEnabled) {
+            handleClean();
+          }
+        } else if (current.usedPercent >= settings.panicThresholdPercent - 15) {
           setPetState('warning');
         } else {
           setPetState('sleep');
@@ -47,22 +83,21 @@ export function App() {
     poll();
     timer = setInterval(poll, 3000);
     return () => clearInterval(timer);
-  }, [isCleaning, cleanResult, petState]);
+  }, [isCleaning, cleanResult, petState, settings]);
 
   // Handle Clean
   const handleClean = async () => {
     if (isCleaning) return;
     setIsCleaning(true);
     setPetState('cleaning');
-    sfx.playSweep();
+    if (settings.soundEnabled) sfx.playSweep();
 
     try {
       const res = await triggerCleanMemory();
       setCleanResult(res);
       setPetState('cheerful');
-      sfx.playFanfare();
+      if (settings.soundEnabled) sfx.playFanfare();
 
-      // Update XP & Level
       setEvolution((prev) => {
         const nextExpTotal = prev.exp + res.expGained;
         const leveledUp = nextExpTotal >= prev.nextExp;
@@ -75,7 +110,6 @@ export function App() {
         };
       });
 
-      // After 4.5s restore
       setTimeout(() => {
         setCleanResult(null);
         setIsCleaning(false);
@@ -99,7 +133,16 @@ export function App() {
   };
 
   return (
-    <main className="w-screen h-screen flex flex-col items-end justify-end p-4 bg-transparent select-none overflow-hidden">
+    <main className="w-screen h-screen flex flex-col items-end justify-end p-4 bg-transparent select-none overflow-hidden relative">
+      {/* Settings Modal */}
+      {isSettingsOpen && (
+        <SettingsModal
+          settings={settings}
+          onUpdateSettings={handleUpdateSettings}
+          onClose={() => setIsSettingsOpen(false)}
+        />
+      )}
+
       {/* 1. Speech Bubble / Receipt area (Above Pet) */}
       <div className="flex flex-col items-end mb-1">
         {cleanResult && (
@@ -113,11 +156,16 @@ export function App() {
 
       {/* 2. Floating Pet Container */}
       <div className="relative group">
-        <RamgottiPet state={petState} onClick={handlePetClick} />
+        <RamgottiPet
+          state={petState}
+          character={currentChar}
+          onClick={handlePetClick}
+          onOpenSettings={() => setIsSettingsOpen(true)}
+        />
 
         {/* Level & RAM badge on hover */}
         <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-900/90 border border-slate-700 text-slate-200 px-2 py-0.5 rounded-full text-[10px] font-pixel whitespace-nowrap pointer-events-none">
-          Lv.{evolution.level} · RAM {stats?.usedPercent ?? 0}%
+          {currentChar.name} · RAM {stats?.usedPercent ?? 0}%
         </div>
       </div>
 
@@ -147,11 +195,17 @@ export function App() {
             onClick={() => {
               setStats((prev) => prev && { ...prev, usedPercent: 88 });
               setPetState('panic');
-              sfx.playPanic();
+              if (settings.soundEnabled) sfx.playPanic();
             }}
             className="px-2 py-0.5 rounded bg-red-950/60 hover:bg-red-900/60 text-red-300 font-bold"
           >
             88% (위기)
+          </button>
+          <button
+            onClick={() => setIsSettingsOpen(true)}
+            className="px-2 py-0.5 rounded bg-cyan-900/60 hover:bg-cyan-800/60 text-cyan-300 font-bold ml-1"
+          >
+            ⚙️ 설정 열기
           </button>
         </div>
       )}

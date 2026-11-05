@@ -1,5 +1,21 @@
 export type PetState = 'sleep' | 'warning' | 'panic' | 'cleaning' | 'cheerful';
 
+export interface CharacterItem {
+  id: string;
+  name: string;
+  subtitle: string;
+  image: string;
+  badge: string;
+  tag: string;
+}
+
+export interface AppSettings {
+  selectedCharacterId: string;
+  panicThresholdPercent: number; // 75, 80, 85
+  soundEnabled: boolean;
+  autoCleanEnabled: boolean;
+}
+
 export interface MemoryStats {
   usedPercent: number;
   totalMb: number;
