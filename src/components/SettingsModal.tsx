@@ -160,7 +160,7 @@ export const SettingsModal: React.FC<Props> = ({
               ))}
             </div>
             <p className="text-[10px] text-slate-500 mt-1">
-              설정한 메모리 점유율을 초과하면 펫이 팝업되어 싹 쓸기를 제안합니다.
+              설정한 메모리 점유율을 초과하면 펫이 싹 쓸기를 제안합니다. (자동 청소 시 3분 쿨타임)
             </p>
           </div>
 

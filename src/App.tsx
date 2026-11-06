@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { PetState, MemoryStats, CleanResult, PetEvolution, AppSettings } from './types';
 import { RamgottiPet } from './components/RamgottiPet';
 import { PanicBubble } from './components/PanicBubble';
@@ -14,12 +14,16 @@ const DEFAULT_SETTINGS: AppSettings = {
   autoCleanEnabled: false,
 };
 
+const AUTO_CLEAN_COOLDOWN_MS = 3 * 60 * 1000; // 자동 청소 3분 쿨다운
+const REST_AFTER_CLEAN_MS = 20 * 1000; // 청소 완료 후 20초간 휴식 상태 유지
+
 export function App() {
   const [stats, setStats] = useState<MemoryStats | null>(null);
   const [petState, setPetState] = useState<PetState>('sleep');
   const [isCleaning, setIsCleaning] = useState(false);
   const [cleanResult, setCleanResult] = useState<CleanResult | null>(null);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const lastCleanTimeRef = useRef<number>(0);
 
   // Settings with localStorage persistence
   const [settings, setSettings] = useState<AppSettings>(() => {
@@ -61,15 +65,22 @@ export function App() {
       const current = await fetchMemoryStats();
       setStats(current);
 
+      const now = Date.now();
+      const isResting = now - lastCleanTimeRef.current < REST_AFTER_CLEAN_MS;
+      const isCooldown = now - lastCleanTimeRef.current < AUTO_CLEAN_COOLDOWN_MS;
+
       if (!isCleaning && !cleanResult) {
-        if (current.usedPercent >= settings.panicThresholdPercent) {
+        if (isResting) {
+          // 방금 청소를 마쳤으므로 잠시 평온한 상태 유지
+          setPetState('sleep');
+        } else if (current.usedPercent >= settings.panicThresholdPercent) {
           if (petState !== 'panic') {
             if (settings.soundEnabled) sfx.playPanic();
           }
           setPetState('panic');
 
-          // Auto-clean if enabled
-          if (settings.autoCleanEnabled) {
+          // Auto-clean if enabled and not in cooldown
+          if (settings.autoCleanEnabled && !isCooldown) {
             handleClean();
           }
         } else if (current.usedPercent >= settings.panicThresholdPercent - 15) {
@@ -90,12 +101,14 @@ export function App() {
     if (isCleaning) return;
     setIsCleaning(true);
     setPetState('cleaning');
+    lastCleanTimeRef.current = Date.now();
     if (settings.soundEnabled) sfx.playSweep();
 
     try {
       const res = await triggerCleanMemory();
       setCleanResult(res);
       setPetState('cheerful');
+      lastCleanTimeRef.current = Date.now();
       if (settings.soundEnabled) sfx.playFanfare();
 
       setEvolution((prev) => {
@@ -114,7 +127,7 @@ export function App() {
         setCleanResult(null);
         setIsCleaning(false);
         setPetState('sleep');
-      }, 4500);
+      }, 4000);
     } catch (e) {
       console.error(e);
       setIsCleaning(false);
