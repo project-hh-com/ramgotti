@@ -133,7 +133,7 @@ export function App() {
   };
 
   return (
-    <main className="w-screen h-screen flex flex-col items-end justify-end p-4 bg-transparent select-none overflow-hidden relative">
+    <main className="w-screen h-screen flex flex-col items-center justify-end pb-4 px-6 bg-transparent select-none overflow-hidden relative">
       {/* Settings Modal */}
       {isSettingsOpen && (
         <SettingsModal
@@ -144,7 +144,7 @@ export function App() {
       )}
 
       {/* 1. Speech Bubble / Receipt area (Above Pet) */}
-      <div className="flex flex-col items-end mb-1">
+      <div className="flex flex-col items-center mb-1 w-full max-w-[280px]">
         {cleanResult && (
           <CleanReceipt result={cleanResult} onClose={() => setCleanResult(null)} />
         )}
@@ -155,7 +155,7 @@ export function App() {
       </div>
 
       {/* 2. Floating Pet Container */}
-      <div className="relative group">
+      <div className="relative group flex flex-col items-center">
         <RamgottiPet
           state={petState}
           character={currentChar}
@@ -164,7 +164,7 @@ export function App() {
         />
 
         {/* Level & RAM badge on hover */}
-        <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-900/90 border border-slate-700 text-slate-200 px-2 py-0.5 rounded-full text-[10px] font-pixel whitespace-nowrap pointer-events-none">
+        <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-900/90 border border-slate-700 text-slate-200 px-2.5 py-0.5 rounded-full text-[10px] font-pixel whitespace-nowrap pointer-events-none shadow-lg z-10">
           Lv.{evolution.level} {currentChar.name} · RAM {stats?.usedPercent ?? 0}%
         </div>
       </div>

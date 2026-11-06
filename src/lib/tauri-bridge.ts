@@ -56,3 +56,20 @@ export async function triggerCleanMemory(): Promise<CleanResult> {
     expGained: freedMb,
   };
 }
+
+export async function startWindowDrag(): Promise<void> {
+  if (isTauri) {
+    try {
+      const { invoke } = await import('@tauri-apps/api/core');
+      await invoke('start_drag');
+      return;
+    } catch {
+      try {
+        const { getCurrentWindow } = await import('@tauri-apps/api/window');
+        await getCurrentWindow().startDragging();
+      } catch (err) {
+        console.warn('startDragging failed:', err);
+      }
+    }
+  }
+}

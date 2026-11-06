@@ -1,5 +1,6 @@
 import React from 'react';
 import { PetState, CharacterItem } from '../types';
+import { startWindowDrag } from '../lib/tauri-bridge';
 
 interface Props {
   state: PetState;
@@ -16,16 +17,24 @@ export const RamgottiPet: React.FC<Props> = ({
 }) => {
   const isImageChar = character.id !== 'vector';
 
+  const handleMouseDown = (e: React.MouseEvent) => {
+    // Left-click initiates drag
+    if (e.button === 0) {
+      startWindowDrag();
+    }
+  };
+
   return (
     <div className="relative group select-none">
       {/* Settings Gear Button (Visible on Hover) */}
       <button
+        data-no-drag
         onClick={(e) => {
           e.stopPropagation();
           onOpenSettings?.();
         }}
         title="램고치 설정"
-        className="absolute -top-2 -left-2 z-20 w-6 h-6 rounded-full bg-slate-900/90 border border-slate-700 text-slate-300 hover:text-white hover:border-cyan-400 flex items-center justify-center text-xs shadow-md opacity-0 group-hover:opacity-100 transition-opacity"
+        className="absolute -top-2 -left-2 z-20 w-6 h-6 rounded-full bg-slate-900/90 border border-slate-700 text-slate-300 hover:text-white hover:border-cyan-400 flex items-center justify-center text-xs shadow-md opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
       >
         ⚙️
       </button>
@@ -33,8 +42,9 @@ export const RamgottiPet: React.FC<Props> = ({
       {/* Pet Interactive Body */}
       <div
         data-tauri-drag-region
+        onMouseDown={handleMouseDown}
         onClick={onClick}
-        className={`relative cursor-pointer transition-transform duration-300 hover:scale-105 ${
+        className={`relative cursor-grab active:cursor-grabbing transition-transform duration-300 hover:scale-105 select-none ${
           state === 'panic'
             ? 'animate-wiggle'
             : state === 'cleaning'
@@ -46,14 +56,15 @@ export const RamgottiPet: React.FC<Props> = ({
       >
         {isImageChar ? (
           /* High-Quality Bitmap Mascot Character */
-          <div className="relative w-36 h-36 flex items-center justify-center">
+          <div className="relative w-36 h-36 flex items-center justify-center pointer-events-none">
             {/* Ground Shadow */}
             <div className="absolute bottom-2 w-28 h-6 bg-slate-950/50 rounded-full blur-[2px] -z-10" />
 
             <img
               src={character.image}
               alt={character.name}
-              className={`w-32 h-32 object-contain drop-shadow-2xl transition-all ${
+              draggable={false}
+              className={`w-32 h-32 object-contain drop-shadow-2xl transition-all select-none pointer-events-none ${
                 state === 'sleep'
                   ? 'brightness-90 translate-y-1'
                   : state === 'panic'
