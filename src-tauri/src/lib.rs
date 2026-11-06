@@ -124,10 +124,22 @@ fn start_drag(window: tauri::Window) -> Result<(), String> {
     window.start_dragging().map_err(|e| e.to_string())
 }
 
+#[tauri::command]
+fn set_window_size(window: tauri::Window, width: f64, height: f64) -> Result<(), String> {
+    window
+        .set_size(tauri::LogicalSize::new(width, height))
+        .map_err(|e| e.to_string())
+}
+
 pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_shell::init())
-        .invoke_handler(tauri::generate_handler![get_memory_stats, clean_memory, start_drag])
+        .invoke_handler(tauri::generate_handler![
+            get_memory_stats,
+            clean_memory,
+            start_drag,
+            set_window_size
+        ])
         .run(tauri::generate_context!())
         .expect("error while running ramgotti");
 }

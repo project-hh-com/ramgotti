@@ -4,7 +4,7 @@ import { RamgottiPet } from './components/RamgottiPet';
 import { PanicBubble } from './components/PanicBubble';
 import { CleanReceipt } from './components/CleanReceipt';
 import { SettingsModal, CHARACTERS } from './components/SettingsModal';
-import { fetchMemoryStats, triggerCleanMemory } from './lib/tauri-bridge';
+import { fetchMemoryStats, triggerCleanMemory, resizeWindow } from './lib/tauri-bridge';
 import { sfx } from './lib/sfx';
 
 const DEFAULT_SETTINGS: AppSettings = {
@@ -132,19 +132,29 @@ export function App() {
     }
   };
 
+  const handleOpenSettings = async () => {
+    setIsSettingsOpen(true);
+    await resizeWindow(380, 420);
+  };
+
+  const handleCloseSettings = async () => {
+    setIsSettingsOpen(false);
+    await resizeWindow(260, 200);
+  };
+
   return (
-    <main className="w-screen h-screen flex flex-col items-center justify-end pb-4 px-6 bg-transparent select-none overflow-hidden relative">
+    <main className="w-screen h-screen flex flex-col items-center justify-end pb-2 px-2 bg-transparent select-none overflow-hidden relative">
       {/* Settings Modal */}
       {isSettingsOpen && (
         <SettingsModal
           settings={settings}
           onUpdateSettings={handleUpdateSettings}
-          onClose={() => setIsSettingsOpen(false)}
+          onClose={handleCloseSettings}
         />
       )}
 
       {/* 1. Speech Bubble / Receipt area (Above Pet) */}
-      <div className="flex flex-col items-center mb-1 w-full max-w-[280px]">
+      <div className="flex flex-col items-center mb-0.5 w-full">
         {cleanResult && (
           <CleanReceipt result={cleanResult} onClose={() => setCleanResult(null)} />
         )}
@@ -160,11 +170,11 @@ export function App() {
           state={petState}
           character={currentChar}
           onClick={handlePetClick}
-          onOpenSettings={() => setIsSettingsOpen(true)}
+          onOpenSettings={handleOpenSettings}
         />
 
         {/* Level & RAM badge on hover */}
-        <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-900/90 border border-slate-700 text-slate-200 px-2.5 py-0.5 rounded-full text-[10px] font-pixel whitespace-nowrap pointer-events-none shadow-lg z-10">
+        <div className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-900/90 border border-slate-700 text-slate-200 px-2 py-0.5 rounded-full text-[9px] font-pixel whitespace-nowrap pointer-events-none shadow-lg z-10">
           Lv.{evolution.level} {currentChar.name} · RAM {stats?.usedPercent ?? 0}%
         </div>
       </div>

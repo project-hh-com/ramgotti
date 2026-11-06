@@ -34,7 +34,7 @@ export const RamgottiPet: React.FC<Props> = ({
           onOpenSettings?.();
         }}
         title="램고치 설정"
-        className="absolute -top-2 -left-2 z-20 w-6 h-6 rounded-full bg-slate-900/90 border border-slate-700 text-slate-300 hover:text-white hover:border-cyan-400 flex items-center justify-center text-xs shadow-md opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
+        className="absolute -top-1.5 -left-1.5 z-20 w-5 h-5 rounded-full bg-slate-900/90 border border-slate-700 text-slate-300 hover:text-white hover:border-cyan-400 flex items-center justify-center text-[10px] shadow-md opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
       >
         ⚙️
       </button>
@@ -55,18 +55,18 @@ export const RamgottiPet: React.FC<Props> = ({
         }`}
       >
         {isImageChar ? (
-          /* High-Quality Bitmap Mascot Character */
-          <div className="relative w-36 h-36 flex items-center justify-center pointer-events-none">
+          /* High-Quality Bitmap Mascot Character (Compact 80px) */
+          <div className="relative w-22 h-22 flex items-center justify-center pointer-events-none">
             {/* Ground Shadow */}
-            <div className="absolute bottom-2 w-28 h-6 bg-slate-950/50 rounded-full blur-[2px] -z-10" />
+            <div className="absolute bottom-1 w-16 h-3.5 bg-slate-950/50 rounded-full blur-[2px] -z-10" />
 
             <img
               src={character.image}
               alt={character.name}
               draggable={false}
-              className={`w-32 h-32 object-contain drop-shadow-2xl transition-all select-none pointer-events-none ${
+              className={`w-20 h-20 object-contain drop-shadow-xl transition-all select-none pointer-events-none ${
                 state === 'sleep'
-                  ? 'brightness-90 translate-y-1'
+                  ? 'brightness-90 translate-y-0.5'
                   : state === 'panic'
                   ? 'brightness-105'
                   : ''
@@ -75,14 +75,14 @@ export const RamgottiPet: React.FC<Props> = ({
 
             {/* Panic Sweatdrop Overlay */}
             {state === 'panic' && (
-              <div className="absolute top-2 right-4 text-2xl animate-bounce">
+              <div className="absolute top-0 right-1 text-base animate-bounce">
                 💦
               </div>
             )}
 
             {/* Cleaning Broom Overlay */}
             {state === 'cleaning' && (
-              <div className="absolute -bottom-1 -right-2 text-2xl animate-spin">
+              <div className="absolute -bottom-1 -right-1 text-base animate-spin">
                 🧹
               </div>
             )}
@@ -91,7 +91,7 @@ export const RamgottiPet: React.FC<Props> = ({
           /* Classic Vector SVG Mascot */
           <svg
             viewBox="0 0 160 140"
-            className="w-36 h-32 drop-shadow-xl"
+            className="w-22 h-20 drop-shadow-xl"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
           >

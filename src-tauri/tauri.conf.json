@@ -14,9 +14,9 @@
       {
         "label": "main",
         "title": "RAMgotti",
-        "width": 380,
-        "height": 340,
-        "resizable": false,
+        "width": 260,
+        "height": 200,
+        "resizable": true,
         "decorations": false,
         "transparent": true,
         "alwaysOnTop": true,

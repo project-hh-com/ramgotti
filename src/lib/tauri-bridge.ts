@@ -73,3 +73,20 @@ export async function startWindowDrag(): Promise<void> {
     }
   }
 }
+
+export async function resizeWindow(width: number, height: number): Promise<void> {
+  if (isTauri) {
+    try {
+      const { invoke } = await import('@tauri-apps/api/core');
+      await invoke('set_window_size', { width, height });
+      return;
+    } catch {
+      try {
+        const { getCurrentWindow, LogicalSize } = await import('@tauri-apps/api/window');
+        await getCurrentWindow().setSize(new LogicalSize(width, height));
+      } catch (err) {
+        console.warn('resizeWindow failed:', err);
+      }
+    }
+  }
+}
